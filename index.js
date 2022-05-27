@@ -4,6 +4,8 @@ var currentRow = 1;
 var guess = '';
 var gamesPlayed = [];
 
+// Variables associated with playing the game
+
 // Query Selectors
 var inputs = document.querySelectorAll('input');
 var guessButton = document.querySelector('#guess-button');
@@ -23,9 +25,13 @@ var gameOverGuessGrammar = document.querySelector('#game-over-guesses-plural');
 // Event Listeners
 window.addEventListener('load', setGame);
 
+// on load the game is set
+
 for (var i = 0; i < inputs.length; i++) {
   inputs[i].addEventListener('keyup', function() { moveToNextInput(event) });
 }
+
+// after letter is input, the user can move to the next box
 
 for (var i = 0; i < keyLetters.length; i++) {
   keyLetters[i].addEventListener('click', function() { clickLetter(event) });
@@ -51,6 +57,8 @@ function getRandomWord() {
   return words[randomIndex];
 }
 
+// word is randomized each time
+
 function updateInputPermissions() {
   for(var i = 0; i < inputs.length; i++) {
     if(!inputs[i].id.includes(`-${currentRow}-`)) {
@@ -62,6 +70,8 @@ function updateInputPermissions() {
 
   inputs[0].focus();
 }
+
+// inputs only allowed after a row has been filed and guess has been submited
 
 function moveToNextInput(e) {
   var key = e.keyCode || e.charCode;
@@ -101,6 +111,10 @@ function submitGuess() {
   }
 }
 
+// win conditions checked after every guess.
+// Error message for invalid words. 
+// wons are checked, not sure about losses
+
 function checkIsWord() {
   guess = '';
 
@@ -112,6 +126,8 @@ function checkIsWord() {
 
   return words.includes(guess);
 }
+
+// checks rows for valid words
 
 function compareGuess() {
   var guessLetters = guess.split('');
@@ -131,6 +147,8 @@ function compareGuess() {
   }
 
 }
+
+// changes colors of boxes based on correct or incorrect letters
 
 function updateBoxColor(letterLocation, className) {
   var row = [];
@@ -218,6 +236,8 @@ function viewRules() {
   viewStatsButton.classList.remove('active');
 }
 
+// does many things when rules button is pressed
+
 function viewGame() {
   letterKey.classList.remove('hidden');
   gameBoard.classList.remove('collapsed');
@@ -229,6 +249,8 @@ function viewGame() {
   viewStatsButton.classList.remove('active');
 }
 
+// takes one back to main game page
+
 function viewStats() {
   letterKey.classList.add('hidden');
   gameBoard.classList.add('collapsed');
@@ -239,8 +261,12 @@ function viewStats() {
   viewStatsButton.classList.add('active');
 }
 
+// takes user to stats page which currently doesn't show much 
+
 function viewGameOverMessage() {
   gameOverBox.classList.remove('collapsed')
   letterKey.classList.add('hidden');
   gameBoard.classList.add('collapsed');
 }
+
+// only displays message for winning game
