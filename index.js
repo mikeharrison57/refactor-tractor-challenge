@@ -1,8 +1,10 @@
+
 // Global Variables
 var winningWord = '';
 var currentRow = 1;
 var guess = '';
 var gamesPlayed = [];
+var words;
 
 // Variables associated with playing the game
 
@@ -22,8 +24,24 @@ var gameOverBox = document.querySelector('#game-over-section');
 var gameOverGuessCount = document.querySelector('#game-over-guesses-count');
 var gameOverGuessGrammar = document.querySelector('#game-over-guesses-plural');
 
+// API Calls 
+const fetchWordData = () => {
+  return fetch("http://localhost:3001/api/v1/words")
+    .then(response => response.json())
+    .then(data => data)
+    .catch(error => console.log("Word API error!"));
+};
+
+const fetchData = () => {
+  return Promise.all([fetchWordData()]).then(data => {
+    words = data[0];
+    setGame();
+  })
+};
+
+
 // Event Listeners
-window.addEventListener('load', setGame);
+window.addEventListener('load', fetchData);
 
 // on load the game is set
 
