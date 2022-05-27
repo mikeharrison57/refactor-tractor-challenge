@@ -1,4 +1,3 @@
-
 // Global Variables
 var winningWord = '';
 var currentRow = 1;
@@ -23,6 +22,8 @@ var stats = document.querySelector('#stats-section');
 var gameOverBox = document.querySelector('#game-over-section');
 var gameOverGuessCount = document.querySelector('#game-over-guesses-count');
 var gameOverGuessGrammar = document.querySelector('#game-over-guesses-plural');
+var gameOverMessage = document.querySelector('#game-over-message');
+var informationalText = document.querySelector('.informational-text');
 
 // API Calls 
 const fetchWordData = () => {
@@ -39,20 +40,19 @@ const fetchData = () => {
   })
 };
 
-
 // Event Listeners
 window.addEventListener('load', fetchData);
-
+window.addEventListener('load')
 // on load the game is set
 
 for (var i = 0; i < inputs.length; i++) {
-  inputs[i].addEventListener('keyup', function() { moveToNextInput(event) });
+  inputs[i].addEventListener('keyup', function(event) { moveToNextInput(event) });
 }
 
 // after letter is input, the user can move to the next box
 
 for (var i = 0; i < keyLetters.length; i++) {
-  keyLetters[i].addEventListener('click', function() { clickLetter(event) });
+  keyLetters[i].addEventListener('click', function(event) { clickLetter(event) });
 }
 
 guessButton.addEventListener('click', submitGuess);
@@ -121,6 +121,8 @@ function submitGuess() {
     compareGuess();
     if (checkForWin()) {
       setTimeout(declareWinner, 1000);
+    } else if (!checkForWin() && currentRow === 6) {
+      setTimeout(declareLoser, 1000);
     } else {
       changeRow();
     }
@@ -208,6 +210,13 @@ function declareWinner() {
   setTimeout(startNewGame, 4000);
 }
 
+function declareLoser() {
+  recordGameStats();
+  changeGameLostText();
+  viewGameOverMessage();
+  setTimeout(startNewGame, 4000);
+}
+
 function recordGameStats() {
   gamesPlayed.push({ solved: true, guesses: currentRow });
 }
@@ -221,6 +230,10 @@ function changeGameOverText() {
   }
 }
 
+function changeGameLostText() {
+  gameOverBox.innerHTML = `<h1>Sorry, You Lost!</h1>`
+}
+
 function startNewGame() {
   clearGameBoard();
   clearKey();
@@ -228,6 +241,7 @@ function startNewGame() {
   viewGame();
   inputs[0].focus();
 }
+
 
 function clearGameBoard() {
   for (var i = 0; i < inputs.length; i++) {
